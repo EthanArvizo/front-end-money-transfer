@@ -1,12 +1,19 @@
-import axios from 'axios';
+import axiosInstance from '../services/axiosInstance';
 
-const API_BASE_URL = 'http://localhost:8080'; // Replace with your backend URL
+
+const API_BASE_URL = 'http://localhost:8080';  // Adjust the URL based on your backend's address
 
 export const login = async (username, password) => {
   try {
-    const response = await axios.post(`${API_BASE_URL}/login`, { username, password });
-    return response.data; // Adjust based on your API response structure
+    const response = await axiosInstance.post(`${API_BASE_URL}/login`, {
+      username,
+      password,
+    });
+  
+
+    return response.data;
   } catch (error) {
-    throw error; // Propagate the error for handling in the component
-  }
+    throw error;
+  } 
 };
+
