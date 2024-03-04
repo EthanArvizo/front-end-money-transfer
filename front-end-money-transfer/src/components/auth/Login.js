@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState} from 'react';
 import { login } from '../../api/tenmoApi';
 
 import { useNavigate } from 'react-router-dom';
@@ -22,6 +22,7 @@ const Login = () => {
       });
   
       // Navigate to the dashboard (MoneyTransfer component)
+      console.log('Navigating to /money-transfer');
       navigate('/money-transfer'); // Adjust the route based on your application structure
   
       console.log('Login successful:', response);
@@ -30,12 +31,6 @@ const Login = () => {
       // Handle login error (e.g., display an error message to the user)
     }
   };
-
-  useEffect(() => {
-    if (balance !== null) {
-      console.log('User balance:', balance);
-    }
-  }, [balance]);
 
   return (
     <div>

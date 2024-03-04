@@ -1,21 +1,23 @@
+// MoneyTransfer.js
 import React, { useEffect, useState } from 'react';
 import { getBalance } from '../../api/accountApi';
 import { useAuth } from '../../AuthContext';
 
 const MoneyTransfer = () => {
+
   const { authData } = useAuth();
   const [balance, setBalance] = useState(null);
 
   useEffect(() => {
-    console.log('MoneyTransfer rendered');
+
     if (authData) {
       const { user, authToken } = authData;
-  
+
       const fetchBalance = async () => {
         try {
           const balanceResponse = await getBalance(user.id, authToken);
           console.log('User balance response:', balanceResponse);
-  
+
           if (typeof balanceResponse === 'number') {
             console.log('Setting balance:', balanceResponse);
             setBalance(balanceResponse);
@@ -26,7 +28,7 @@ const MoneyTransfer = () => {
           console.error('Error fetching balance:', error);
         }
       };
-  
+
       fetchBalance();
     }
   }, [authData]);
