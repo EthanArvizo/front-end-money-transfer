@@ -2,6 +2,8 @@
 import React, { useEffect, useState } from 'react';
 import { getBalance } from '../../api/accountApi';
 import { useAuth } from '../../AuthContext';
+import '../../styles/Dashboard.css';
+
 
 const MoneyTransfer = () => {
 
@@ -34,12 +36,12 @@ const MoneyTransfer = () => {
   }, [authData]);
 
   return (
-    <div>
-      <h1>Money Transfer Dashboard</h1>
+    <div className="dashboard-container">
+      <h1 className="balance-info">Money Transfer Dashboard</h1>
 
       {/* Display User Balance */}
       {balance !== null ? (
-        <p>Welcome, {authData.user.username}! Your current balance is: ${balance}</p>
+        <p className="balance-info">Welcome, {authData.user.username}! Your current balance is: ${balance}</p>
       ) : (
         <p>Loading balance...</p>
       )}
