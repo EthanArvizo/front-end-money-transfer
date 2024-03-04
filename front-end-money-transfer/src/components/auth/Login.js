@@ -1,12 +1,13 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { login } from '../../api/tenmoApi';
+
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../../AuthContext';
-import { getBalance } from '../../api/accountApi'; 
 
 const Login = () => {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
+  const [balance] = useState(null); // Define setBalance function
   const navigate = useNavigate();
   const { setAuthData } = useAuth();
 
@@ -14,33 +15,36 @@ const Login = () => {
     try {
       const response = await login(username, password);
       const authToken = response.token;
-
-      
-
-      // Attempt to fetch the balance
-      const balanceResponse = await getBalance(response.user.id, authToken);
-      console.log('User balance:', balanceResponse);
-
+  
       setAuthData({
         authToken,
         user: response.user,
       });
-
-      // Handle successful login (e.g., navigate to dashboard)
+  
+      // Navigate to the dashboard (MoneyTransfer component)
+      navigate('/money-transfer'); // Adjust the route based on your application structure
+  
       console.log('Login successful:', response);
-
-      // Example: navigate to the dashboard (adjust this based on your routing)
-      navigate('/dashboard');
     } catch (error) {
       console.error('Login failed:', error);
+      // Handle login error (e.g., display an error message to the user)
     }
   };
+
+  useEffect(() => {
+    if (balance !== null) {
+      console.log('User balance:', balance);
+    }
+  }, [balance]);
 
   return (
     <div>
       <input type="text" placeholder="Username" onChange={(e) => setUsername(e.target.value)} />
       <input type="password" placeholder="Password" onChange={(e) => setPassword(e.target.value)} />
       <button onClick={handleLogin}>Login</button>
+
+      {/* Display the balance */}
+      {balance !== null && <p>User balance: {balance}</p>}
     </div>
   );
 };

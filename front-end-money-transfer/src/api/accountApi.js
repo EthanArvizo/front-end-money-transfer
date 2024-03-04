@@ -1,18 +1,31 @@
-import axiosInstance from '../services/axiosInstance';
+import axios from 'axios';
 
-const API_BASE_URL = 'http://localhost:8080';
+const getBalance = async (userId, authToken) => {
+  try {
+    const response = await axios({
+      method: 'get',
+      url: `http://localhost:8080/account/${userId}`,
+      headers: {
+        Authorization: `Bearer ${authToken}`,
+      },
+    });
 
-export const getBalance = async (userId, authToken) => {
-    try {
-      const response = await axiosInstance.get(`${API_BASE_URL}/account/${userId}`, {
-        headers: {
-          Authorization: `Bearer ${authToken}`,
-        },
-      });
-  
-      // Extract and return only the balance
+    // Check if the response has the expected properties
+    if (
+      response.data &&
+      response.data.accountId !== undefined &&
+      response.data.id !== undefined &&
+      response.data.balance !== undefined
+    ) {
+      // Return the balance
       return response.data.balance;
-    } catch (error) {
-      throw error;
+    } else {
+      console.error('Invalid balance response:', response.data);
+      throw new Error('Invalid balance response');
     }
-  };
+  } catch (error) {
+    throw error;
+  }
+};
+
+export { getBalance };
