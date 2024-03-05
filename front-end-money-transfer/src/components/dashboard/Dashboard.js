@@ -5,7 +5,7 @@ import { useAuth } from '../../AuthContext';
 import '../../styles/Dashboard.css';
 
 
-const MoneyTransfer = () => {
+const Dashboard = () => {
 
   const { authData } = useAuth();
   const [balance, setBalance] = useState(null);
@@ -51,4 +51,4 @@ const MoneyTransfer = () => {
   );
 };
 
-export default MoneyTransfer;
+export default Dashboard;

@@ -22,8 +22,8 @@ const Login = () => {
       });
   
       // Navigate to the dashboard (MoneyTransfer component)
-      console.log('Navigating to /money-transfer');
-      navigate('/money-transfer'); // Adjust the route based on your application structure
+      console.log('Navigating to /dashboard');
+      navigate('/dashboard'); // Adjust the route based on your application structure
   
       console.log('Login successful:', response);
     } catch (error) {

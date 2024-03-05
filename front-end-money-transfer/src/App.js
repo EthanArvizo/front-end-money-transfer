@@ -4,7 +4,7 @@ import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 import { AuthProvider } from './AuthContext';
 import Login from './components/auth/Login';
 import HomePage from './components/HomePage';
-import MoneyTransfer from './components/dashboard/MoneyTransfer';
+import DashBoard from './components/dashboard/Dashboard';
 
 function App() {
   useEffect(() => {
@@ -17,7 +17,7 @@ function App() {
         <Routes>
           <Route path="/" element={<HomePage />} />
           <Route path="/login" element={<Login />} />
-          <Route path="/money-transfer" element={<MoneyTransfer />} />
+          <Route path="/Dashboard" element={<DashBoard />} />
         </Routes>
       </Router>
     </AuthProvider>
