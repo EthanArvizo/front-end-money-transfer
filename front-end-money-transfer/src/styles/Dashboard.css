@@ -1,24 +1,28 @@
 .dashboard-container {
-    max-width: 600px;
-    margin: auto;
-    padding: 30px;
-    border: 1px solid #ddd;
-    border-radius: 10px;
-    box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
-    background-color: #fff;
-    margin-top: 220px; /* Adjust the margin-top value to center it vertically */
-  }
-  
-  .balance-info {
-    font-size: 24px;
-    font-weight: bold;
-    color: #007bff;
-    margin-bottom: 20px;
-  }
-  
-  .transaction-history {
-    margin-top: 20px;
-  }
+  max-width: 600px;
+  margin: auto;
+  padding: 30px;
+  border: 1px solid #ddd;
+  border-radius: 10px;
+  box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+  background-color: #fff;
+  margin-top: 220px; /* Adjust the margin-top value to center it vertically */
+  text-align: center; /* Center the text horizontally within .dashboard-container */
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.balance-info {
+  font-size: 24px;
+  font-weight: bold;
+  color: #007bff;
+  margin-bottom: 20px;
+}
+
+.transaction-history {
+  margin-top: 20px;
+}
   
   .transaction {
     display: flex;
