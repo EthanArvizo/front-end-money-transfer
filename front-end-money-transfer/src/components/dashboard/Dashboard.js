@@ -20,10 +20,8 @@ const Dashboard = () => {
         try {
           // Fetch balance
           const balanceResponse = await getBalance(user.id, authToken);
-          console.log('User balance response:', balanceResponse);
 
           if (typeof balanceResponse === 'number') {
-            console.log('Setting balance:', balanceResponse);
             setBalance(balanceResponse);
 
             // Fetch account details using userId

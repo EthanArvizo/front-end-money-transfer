@@ -17,3 +17,16 @@ export const login = async (username, password) => {
   } 
 };
 
+export const registerUser = async (username, password) => {
+  try {
+    const response = await axiosInstance.post('/register', {
+      username,
+      password,
+    });
+
+    return response.data;
+  } catch (error) {
+    throw error;
+  }
+};
+
