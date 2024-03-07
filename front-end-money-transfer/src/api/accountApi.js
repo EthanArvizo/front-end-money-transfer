@@ -1,16 +1,11 @@
-import axios from 'axios';
 
-const BASE_URL = 'http://localhost:8080'; // Replace with your actual API base URL
+import axiosInstance from '../services/axiosInstance';
 
-const getBalance = async (userId, authToken) => {
+
+
+const getBalance = async (userId) => {
   try {
-    const response = await axios({
-      method: 'get',
-      url: `${BASE_URL}/account/${userId}`,
-      headers: {
-        Authorization: `Bearer ${authToken}`,
-      },
-    });
+    const response = await axiosInstance.get(`/account/${userId}`);
 
     // Check if the response has the expected properties
     if (
@@ -30,15 +25,9 @@ const getBalance = async (userId, authToken) => {
   }
 };
 
-const getAccountByUserId = async (userId, authToken) => {
+const getAccountByUserId = async (userId) => {
   try {
-    const response = await axios({
-      method: 'get',
-      url: `${BASE_URL}/account/${userId}`,
-      headers: {
-        Authorization: `Bearer ${authToken}`,
-      },
-    });
+    const response = await axiosInstance.get(`/account/${userId}`);
 
     // Check if the response has the expected properties
     if (response.data && response.data.accountId !== undefined) {
@@ -53,6 +42,43 @@ const getAccountByUserId = async (userId, authToken) => {
   }
 };
 
+export default getAccountByUserId;
 
+const getUserById = async (userId) => {
+  try {
+    const response = await axiosInstance.get(`/user/${userId}`);
 
-export { getBalance, getAccountByUserId};
+    // Check if the response has the expected properties
+    if (response.data && response.data.id !== undefined && response.data.username !== undefined) {
+      // Return the user details
+      return response.data;
+    } else {
+      console.error('Invalid user details response:', response.data);
+      throw new Error('Invalid user details response');
+    }
+  } catch (error) {
+    throw error;
+  }
+};
+
+const getUserByAccountId = async (accountId) => {
+  try {
+    // Assuming you have an endpoint like /user/byAccount/{accountId}
+    const response = await axiosInstance.get(`/account/byAccount/${accountId}`);
+
+    console.log('getUserByAccountId response:', response.data);
+
+    // Check if the response has the expected properties
+    if (response.data && response.data.id !== undefined) {
+      // Return the user details
+      return response.data;
+    } else {
+      console.error('Invalid user response:', response.data);
+      throw new Error('Invalid user response');
+    }
+  } catch (error) {
+    throw error;
+  }
+};
+
+export { getBalance, getAccountByUserId, getUserById, getUserByAccountId };

@@ -14,17 +14,20 @@ const Login = () => {
 
   const handleLogin = async () => {
     try {
+      console.log('Attempting login with username:', username);
       const response = await login(username, password);
+      console.log('Login response:', response);
+  
       const authToken = response.token;
+      localStorage.setItem('authToken', authToken);
   
       setAuthData({
         authToken,
         user: response.user,
       });
   
-      // Navigate to the dashboard (MoneyTransfer component)
       console.log('Navigating to /dashboard');
-      navigate('/dashboard'); // Adjust the route based on your application structure
+      navigate('/dashboard');
   
       console.log('Login successful:', response);
     } catch (error) {

@@ -1,8 +1,8 @@
-
 import React, { useEffect, useState } from 'react';
-import { getBalance, getAccountByUserId} from '../../api/accountApi';
-import { getPendingTransfersByAccountId } from '../../api/transfersApi';
+import {getAccountByUserId } from '../../api/accountApi';
+import { getPendingTransfersByAccountId } from '../../api/pendingTransfersApi';
 import { useAuth } from '../../AuthContext';
+import { Link } from 'react-router-dom';
 import '../../styles/Dashboard.css';
 
 const Dashboard = () => {
@@ -18,24 +18,16 @@ const Dashboard = () => {
 
       const fetchData = async () => {
         try {
-          // Fetch balance
-          const balanceResponse = await getBalance(user.id, authToken);
+          // Fetch account details using userId
+          const accountResponse = await getAccountByUserId(user.id, authToken);
+          console.log('User account response:', accountResponse);
+          setAccountId(accountResponse.accountId);
+          setBalance(accountResponse.balance);
 
-          if (typeof balanceResponse === 'number') {
-            setBalance(balanceResponse);
-
-            // Fetch account details using userId
-            const accountResponse = await getAccountByUserId(user.id, authToken);
-            console.log('User account response:', accountResponse);
-            setAccountId(accountResponse.accountId);
-
-            // Fetch pending transfers using accountId from transfersApi
-            const pendingTransfersResponse = await getPendingTransfersByAccountId(accountResponse.accountId, authToken);
-            console.log('Pending transfers response:', pendingTransfersResponse);
-            setPendingTransfers(pendingTransfersResponse);
-          } else {
-            console.error('Invalid balance value:', balanceResponse);
-          }
+          // Fetch pending transfers using accountId from transfersApi
+          const pendingTransfersResponse = await getPendingTransfersByAccountId(accountResponse.accountId, authToken);
+          console.log('Pending transfers response:', pendingTransfersResponse);
+          setPendingTransfers(pendingTransfersResponse);
         } catch (error) {
           console.error('Error fetching data:', error);
         }
@@ -76,6 +68,9 @@ const Dashboard = () => {
           </ul>
         </div>
       ) : null}
+
+      {/* Link to TransferHistory */}
+      <Link to={`/transfer/account/${accountId}`}>Transfer History</Link>
 
       {/* Your additional dashboard content goes here */}
     </div>

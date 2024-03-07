@@ -1,15 +1,16 @@
-// App.js
 import React, { useEffect } from "react";
 import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
 import { AuthProvider } from "./AuthContext";
 import Login from "./components/auth/Login";
-import HomePage from "./components/HomePage";
-import DashBoard from "./components/dashboard/Dashboard";
-import Register from './components/auth/Registration';
+import HomePage from "./HomePage";
+import Dashboard from "./components/dashboard/Dashboard";
+import Register from "./components/auth/Registration";
+import TransferHistory from "./components/transfers/TransferHistory";
 
 function App() {
   useEffect(() => {
     console.log("App rendered");
+    // You can perform initial authentication check here
   }, []);
 
   return (
@@ -19,7 +20,8 @@ function App() {
           <Route path="/" element={<HomePage />} />
           <Route path="/login" element={<Login />} />
           <Route path="/register" element={<Register />} />
-          <Route path="/Dashboard" element={<DashBoard />} />
+          <Route path="/dashboard" element={<Dashboard />} />
+          <Route path="/transfer/account/:accountId" element={<TransferHistory />} />
         </Routes>
       </Router>
     </AuthProvider>
