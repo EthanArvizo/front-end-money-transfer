@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import {getAccountByUserId } from '../../api/accountApi';
-import { getPendingTransfersByAccountId } from '../../api/pendingTransfersApi';
+import { getPendingTransfersByAccountId } from '../../api/transfersApi';
 import { useAuth } from '../../AuthContext';
 import { Link } from 'react-router-dom';
 import '../../styles/Dashboard.css';

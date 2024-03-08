@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useAuth } from '../../AuthContext';
-import { getTransfersByAccountId } from '../../api/GetTransfersApi';
+import { getTransfersByAccountId } from '../../api/transfersApi';
 import { getUserByAccountId } from '../../api/accountApi';
 import { getUserById } from '../../api/accountApi';
 import { useParams } from 'react-router-dom';
