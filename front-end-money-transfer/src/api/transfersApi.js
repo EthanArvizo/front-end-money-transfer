@@ -49,16 +49,21 @@ export const getTransfersByAccountId = async (accountId) => {
     }
   };
 
-  export const sendTransfer = async (accountTo, amount) => {
+  export const sendTransfer = async (accountFrom, accountTo, amount) => {
     try {
       const transferData = {
+        accountFrom, // Adding the accountFrom field
         accountTo,
         amount,
-        // Other transfer details as needed
+        
+       
       };
+
+      console.log('Transfer data:', transferData);
   
       // Your server-side endpoint for creating a send transfer
       const response = await axiosInstance.post('/transfer/send', transferData);
+      console.log('Server response:', response.data);
   
       // Check if the response indicates success (you may need to adjust this based on your server's response format)
       if (response.data === 'Transfer created successfully') {
@@ -70,8 +75,16 @@ export const getTransfersByAccountId = async (accountId) => {
         throw new Error('Error creating transfer');
       }
     } catch (error) {
-      // Handle any Axios errors or other exceptions
-      console.error('Error sending transfer:', error.message);
+      // Enhance the error handling to get more information
+      console.error('Error sending transfer:', error);
+  
+      // Check if the error has a response
+      if (error.response) {
+        // Log the response status and data
+        console.error('Response status:', error.response.status);
+        console.error('Response data:', error.response.data);
+      }
+  
       throw error;
     }
   };

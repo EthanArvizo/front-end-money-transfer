@@ -6,6 +6,7 @@ import HomePage from "./HomePage";
 import Dashboard from "./components/dashboard/Dashboard";
 import Register from "./components/auth/Registration";
 import TransferHistory from "./components/transfers/TransferHistory";
+import SendTransfer from "./components/transfers/SendTransfer";
 
 function App() {
   useEffect(() => {
@@ -22,6 +23,7 @@ function App() {
           <Route path="/register" element={<Register />} />
           <Route path="/dashboard" element={<Dashboard />} />
           <Route path="/transfer/account/:accountId" element={<TransferHistory />} />
+          <Route path="/send-transfer" element={<SendTransfer />} />
         </Routes>
       </Router>
     </AuthProvider>

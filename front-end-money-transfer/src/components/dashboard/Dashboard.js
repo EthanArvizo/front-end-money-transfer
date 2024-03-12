@@ -72,6 +72,10 @@ const Dashboard = () => {
       {/* Link to TransferHistory */}
       <Link to={`/transfer/account/${accountId}`}>Transfer History</Link>
 
+      <Link to="/send-transfer">
+  <button>Send Transfer</button>
+    </Link>
+
       {/* Your additional dashboard content goes here */}
     </div>
   );
