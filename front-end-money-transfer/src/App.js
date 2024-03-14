@@ -7,6 +7,7 @@ import Dashboard from "./components/dashboard/Dashboard";
 import Register from "./components/auth/Registration";
 import TransferHistory from "./components/transfers/TransferHistory";
 import SendTransfer from "./components/transfers/SendTransfer";
+import TransferDetails from "./components/transfers/TransferDetails";
 
 function App() {
   useEffect(() => {
@@ -23,6 +24,7 @@ function App() {
           <Route path="/register" element={<Register />} />
           <Route path="/dashboard" element={<Dashboard />} />
           <Route path="/transfer/account/:accountId" element={<TransferHistory />} />
+          <Route path="/transfer/:transferId" element={<TransferDetails />} /> 
           <Route path="/send-transfer" element={<SendTransfer />} />
         </Routes>
       </Router>

@@ -1,9 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { useAuth } from '../../AuthContext';
 import { getTransfersByAccountId } from '../../api/transfersApi';
-import { getUserByAccountId } from '../../api/accountApi';
-import { getUserById } from '../../api/accountApi';
-import { useParams } from 'react-router-dom';
+import { getUserByAccountId, getUserById } from '../../api/accountApi';
+import { Link, useParams } from 'react-router-dom';
 
 const TransferHistory = () => {
   const { authData } = useAuth();
@@ -49,7 +48,9 @@ const TransferHistory = () => {
 
             return (
               <li key={transfer.transferId}>
-                {`${transfer.amount} from ${senderUsername.username} to ${receiverUsername.username}`}
+                <Link to={`/transfer/${transfer.transferId}`}>
+                  {`${transfer.amount} from ${senderUsername.username} to ${receiverUsername.username}`}
+                </Link>
               </li>
             );
           } catch (error) {

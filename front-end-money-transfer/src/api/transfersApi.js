@@ -48,15 +48,41 @@ export const getTransfersByAccountId = async (accountId) => {
       throw error;
     }
   };
+  export const getTransferDetailsById = async (transferId) => {
+    try {
+      const response = await axiosInstance.get(`/transfer/${transferId}`);
+  
+      // Check if the response has the expected properties
+      if (response.data && typeof response.data === 'object') {
+        // Get sender and receiver details
+        await getUserByAccountId(response.data.accountFrom);
+        await getUserByAccountId(response.data.accountTo);
+  
+        // Construct transfer details object
+        const transferDetails = {
+          transferId: response.data.transferId, // corrected from Id to transferId
+          amount: `$${response.data.amount.toFixed(2)}`,
+          accountFrom: response.data.accountFrom,
+          accountTo: response.data.accountTo,
+          type: response.data.transferTypeId, // Assuming transferTypeId corresponds to type
+          status: response.data.transferStatusId, // Assuming transferStatusId corresponds to status
+        };
+  
+        return transferDetails;
+      }
+    } catch (error) {
+      console.error('Error fetching transfer details:', error);
+      throw error; // Rethrow the error to be handled by the caller
+    }
+  };
+  
 
   export const sendTransfer = async (accountFrom, accountTo, amount) => {
     try {
       const transferData = {
-        accountFrom, // Adding the accountFrom field
+        accountFrom, 
         accountTo,
         amount,
-        
-       
       };
 
       console.log('Transfer data:', transferData);
