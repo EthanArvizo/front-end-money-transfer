@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import UserList from './UserList';
-import { sendTransfer } from '../../api/transfersApi';
+import { sendTransfer, requestTransfer } from '../../api/transfersApi';
 import { getAccountByUserId } from '../../api/accountApi';
 import { useAuth } from '../../AuthContext';
 
@@ -55,9 +55,39 @@ const SendTransfer = () => {
     }
   };
 
+  const handleRequestTransfer = async () => {
+    if (selectedUserId && amount && authData) {
+      try {
+        setIsSubmitting(true);
+        setError(null);
+
+        // Get the account details for the logged-in user
+        const loggedInUserAccount = await getAccountByUserId(authData.user.id);
+
+        // Get the account details for the selected user
+        const selectedUserAccount = await getAccountByUserId(selectedUserId);
+
+        // Assuming requestTransfer returns the success message
+        await requestTransfer(loggedInUserAccount.accountId, selectedUserAccount.accountId, amount);
+
+        // Handle success, e.g., show a success message or redirect
+        console.log('Transfer request successful');
+      } catch (error) {
+        // Handle error, e.g., display an error message
+        console.error('Error requesting transfer:', error.message);
+        setError('Error requesting transfer. Please try again.');
+      } finally {
+        setIsSubmitting(false);
+      }
+    } else {
+      // Handle incomplete form, e.g., show a validation message
+      setError('Please select a user and enter an amount.');
+    }
+  };
+
   return (
     <div>
-      <h2>Send Transfer</h2>
+      <h2>Create Transfer</h2>
       <UserList onSelectUser={handleUserSelect} />
 
       {selectedUserId && (
@@ -69,6 +99,10 @@ const SendTransfer = () => {
 
           <button onClick={handleSendTransfer} disabled={isSubmitting}>
             {isSubmitting ? 'Sending...' : 'Send Money'}
+          </button>
+
+          <button onClick={handleRequestTransfer} disabled={isSubmitting}>
+            {isSubmitting ? 'Requesting...' : 'Request Money'}
           </button>
 
           {error && <p style={{ color: 'red' }}>{error}</p>}

@@ -1,13 +1,13 @@
 import React, { useState, useEffect } from 'react';
 import axiosInstance from '../../services/axiosInstance';
 
-const UserList = ({ onSelectUser }) => {
+const UserList = ({ onSelectUser, loggedInUserId }) => {
   const [users, setUsers] = useState([]);
 
   useEffect(() => {
     const fetchUsers = async () => {
       try {
-        const response = await axiosInstance.get('/user/list');
+        const response = await axiosInstance.get(`/user/list`);
         setUsers(response.data);
       } catch (error) {
         console.error('Error fetching users:', error.message);
@@ -15,7 +15,7 @@ const UserList = ({ onSelectUser }) => {
     };
 
     fetchUsers();
-  }, []);
+  }, [loggedInUserId]); 
 
   return (
     <div>

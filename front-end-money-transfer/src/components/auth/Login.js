@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react'; // Import useEffect
 import { login } from '../../api/tenmoApi';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../../AuthContext';
@@ -11,6 +11,11 @@ const Login = () => {
   
   const navigate = useNavigate();
   const { setAuthData } = useAuth();
+
+  useEffect(() => {
+    // Reset authData when the component mounts (on the login page)
+    setAuthData(null);
+  }, [setAuthData]); // Include setAuthData in the dependency array
 
   const handleLogin = async () => {
     try {
@@ -30,6 +35,7 @@ const Login = () => {
       navigate('/dashboard');
   
       console.log('Login successful:', response);
+  
     } catch (error) {
       console.error('Login failed:', error);
       // Handle login error (e.g., display an error message to the user)

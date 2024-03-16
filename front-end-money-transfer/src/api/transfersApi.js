@@ -114,3 +114,61 @@ export const getTransfersByAccountId = async (accountId) => {
       throw error;
     }
   };
+
+  export const requestTransfer = async (accountFrom, accountTo, amount) => {
+    try {
+      const transferData = {
+        accountFrom,
+        accountTo,
+        amount,
+      };
+  
+      console.log('Transfer request data:', transferData);
+  
+      // Your server-side endpoint for creating a transfer request
+      const response = await axiosInstance.post('/transfer/request', transferData);
+      console.log('Server response:', response.data);
+  
+      // Check if the response indicates success (you may need to adjust this based on your server's response format)
+      if (response.data === 'Transfer request created successfully') {
+        // Optionally, you can handle success here, log, or perform additional actions
+        console.log('Transfer request created successfully');
+      } else {
+        // Handle other responses or errors as needed
+        console.error('Error creating transfer request:', response.data);
+        throw new Error('Error creating transfer request');
+      }
+    } catch (error) {
+      // Enhance the error handling to get more information
+      console.error('Error sending transfer request:', error);
+  
+      // Check if the error has a response
+      if (error.response) {
+        // Log the response status and data
+        console.error('Response status:', error.response.status);
+        console.error('Response data:', error.response.data);
+      }
+  
+      throw error;
+    }
+  };
+
+  export const acceptTransfer = async (transferId) => {
+    try {
+      const response = await axiosInstance.post(`/transfer/accept/${transferId}`);
+      return response.data;
+    } catch (error) {
+      throw new Error('Error accepting transfer: ' + error.message);
+    }
+  };
+  
+  // Function to deny a transfer by transferId
+  export const denyTransfer = async (transferId) => {
+    try {
+      const response = await axiosInstance.post(`/transfer/deny/${transferId}`);
+      return response.data;
+    } catch (error) {
+      throw new Error('Error denying transfer: ' + error.message);
+    }
+  };
+

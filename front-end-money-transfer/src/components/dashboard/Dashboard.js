@@ -1,16 +1,14 @@
 import React, { useEffect, useState } from 'react';
-import {getAccountByUserId } from '../../api/accountApi';
-import { getPendingTransfersByAccountId } from '../../api/transfersApi';
+import { getAccountByUserId } from '../../api/accountApi';
 import { useAuth } from '../../AuthContext';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import '../../styles/Dashboard.css';
 
 const Dashboard = () => {
-  const { authData } = useAuth();
+  const { authData, setAuthData } = useAuth();
   const [balance, setBalance] = useState(null);
   const [accountId, setAccountId] = useState(null);
-  const [pendingTransfers, setPendingTransfers] = useState(null);
-  const [showPendingTransfers, setShowPendingTransfers] = useState(false);
+  const navigate = useNavigate();
 
   useEffect(() => {
     if (authData) {
@@ -23,11 +21,6 @@ const Dashboard = () => {
           console.log('User account response:', accountResponse);
           setAccountId(accountResponse.accountId);
           setBalance(accountResponse.balance);
-
-          // Fetch pending transfers using accountId from transfersApi
-          const pendingTransfersResponse = await getPendingTransfersByAccountId(accountResponse.accountId, authToken);
-          console.log('Pending transfers response:', pendingTransfersResponse);
-          setPendingTransfers(pendingTransfersResponse);
         } catch (error) {
           console.error('Error fetching data:', error);
         }
@@ -37,12 +30,21 @@ const Dashboard = () => {
     }
   }, [authData]);
 
+  const handleLogout = () => {
+    // Clear authentication data from local storage
+    localStorage.removeItem('authToken');
+    // Clear authentication data from context
+    setAuthData(null);
+    // Redirect to the login page
+    navigate('/login');
+  };
+
   return (
     <div className="dashboard-container">
       <h1 className="balance-info">Money Transfer Dashboard</h1>
 
       {/* Display User Balance and Account ID */}
-      {balance !== null && accountId !== null ? (
+      {authData && accountId !== null ? (
         <div>
           <p className="balance-info">Welcome, {authData.user.username}! Your current balance is: ${balance}</p>
         </div>
@@ -50,33 +52,31 @@ const Dashboard = () => {
         <p>Loading data...</p>
       )}
 
-      {/* Display Pending Transfers Button */}
-      <button onClick={() => setShowPendingTransfers(!showPendingTransfers)}>
-        {showPendingTransfers ? 'Hide Pending Transfers' : 'Show Pending Transfers'}
-      </button>
-
-      {/* Display Pending Transfers */}
-      {showPendingTransfers && pendingTransfers !== null ? (
-        <div>
-          <h2 className="balance-info">Pending Transfers</h2>
-          <ul>
-            {pendingTransfers.map((transfer) => (
-              <li key={transfer.transferId}>
-                Transfer ID: {transfer.transferId}, Amount: ${transfer.amount}
-              </li>
-            ))}
-          </ul>
-        </div>
-      ) : null}
+      {/* Link to Pending Transfers */}
+      {authData ? (
+        <Link to={`/account/${accountId}/pending`}>
+          <button>View Pending Transfers</button>
+        </Link>
+      ) : (
+        <Link to="/login">
+          <button>Login</button>
+        </Link>
+      )}
 
       {/* Link to TransferHistory */}
-      <Link to={`/transfer/account/${accountId}`}>Transfer History</Link>
+      <Link to={`/transfer/account/${accountId}`}>
+        <button>Transfer History</button>
+      </Link>
 
+      {/* Link to Create Transfer */}
       <Link to="/send-transfer">
-  <button>Send Transfer</button>
-    </Link>
+        <button>Create Transfer</button>
+      </Link>
 
-      {/* Your additional dashboard content goes here */}
+      {/* Logout option */}
+      {authData && (
+        <button onClick={handleLogout}>Logout</button>
+      )}
     </div>
   );
 };
