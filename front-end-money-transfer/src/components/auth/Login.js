@@ -1,15 +1,15 @@
-import React, { useState, useEffect } from 'react';
-import { updateAuthToken } from '../../services/axiosInstance';
-import { login } from '../../api/tenmoApi';
-import { useNavigate } from 'react-router-dom';
-import { useAuth } from '../../AuthContext';
-import '../../styles/Login.css';
-import { Link } from 'react-router-dom';
+import React, { useState, useEffect } from "react";
+import { updateAuthToken } from "../../services/axiosInstance";
+import { login } from "../../api/tenmoApi";
+import { useNavigate } from "react-router-dom";
+import { useAuth } from "../../AuthContext";
+import "../../styles/Login.css";
+import { Link } from "react-router-dom";
 
 const Login = () => {
-  const [username, setUsername] = useState('');
-  const [password, setPassword] = useState('');
-  
+  const [username, setUsername] = useState("");
+  const [password, setPassword] = useState("");
+
   const navigate = useNavigate();
   const { setAuthData } = useAuth();
 
@@ -20,28 +20,23 @@ const Login = () => {
 
   const handleLogin = async () => {
     try {
-      console.log('Attempting login with username:', username);
       const response = await login(username, password);
-      console.log('Login response:', response);
-  
+
       const authToken = response.token;
-      localStorage.setItem('authToken', authToken);
-  
+      localStorage.setItem("authToken", authToken);
+
       // Update auth data with the new token
       setAuthData({
         authToken,
         user: response.user,
       });
-  
+
       // Update the authorization token in the Axios instance
       updateAuthToken();
-  
-      console.log('Navigating to /dashboard');
-      navigate('/dashboard');
-  
-      console.log('Login successful:', response);
+
+      navigate("/dashboard");
     } catch (error) {
-      console.error('Login failed:', error);
+      console.error("Login failed:", error);
       // Handle login error (e.g., display an error message to the user)
     }
   };

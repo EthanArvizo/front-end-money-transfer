@@ -1,7 +1,4 @@
-
-import axiosInstance from '../services/axiosInstance';
-
-
+import axiosInstance from "../services/axiosInstance";
 
 const getBalance = async (userId) => {
   try {
@@ -17,8 +14,8 @@ const getBalance = async (userId) => {
       // Return the balance
       return response.data.balance;
     } else {
-      console.error('Invalid balance response:', response.data);
-      throw new Error('Invalid balance response');
+      console.error("Invalid balance response:", response.data);
+      throw new Error("Invalid balance response");
     }
   } catch (error) {
     throw error;
@@ -34,8 +31,8 @@ const getAccountByUserId = async (userId) => {
       // Return the account details
       return response.data;
     } else {
-      console.error('Invalid account details response:', response.data);
-      throw new Error('Invalid account details response');
+      console.error("Invalid account details response:", response.data);
+      throw new Error("Invalid account details response");
     }
   } catch (error) {
     throw error;
@@ -49,12 +46,16 @@ const getUserById = async (userId) => {
     const response = await axiosInstance.get(`/user/${userId}`);
 
     // Check if the response has the expected properties
-    if (response.data && response.data.id !== undefined && response.data.username !== undefined) {
+    if (
+      response.data &&
+      response.data.id !== undefined &&
+      response.data.username !== undefined
+    ) {
       // Return the user details
       return response.data;
     } else {
-      console.error('Invalid user details response:', response.data);
-      throw new Error('Invalid user details response');
+      console.error("Invalid user details response:", response.data);
+      throw new Error("Invalid user details response");
     }
   } catch (error) {
     throw error;
@@ -66,15 +67,13 @@ const getUserByAccountId = async (accountId) => {
     // Assuming you have an endpoint like /user/byAccount/{accountId}
     const response = await axiosInstance.get(`/account/byAccount/${accountId}`);
 
-    console.log('getUserByAccountId response:', response.data);
-
     // Check if the response has the expected properties
     if (response.data && response.data.id !== undefined) {
       // Return the user details
       return response.data;
     } else {
-      console.error('Invalid user response:', response.data);
-      throw new Error('Invalid user response');
+      console.error("Invalid user response:", response.data);
+      throw new Error("Invalid user response");
     }
   } catch (error) {
     throw error;

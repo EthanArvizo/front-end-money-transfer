@@ -1,9 +1,9 @@
-import React, { useEffect, useState } from 'react';
-import { getAccountByUserId } from '../../api/accountApi';
-import { useAuth } from '../../AuthContext';
-import { Link } from 'react-router-dom';
-import LogoutButton from '../common/LogoutButton'; // Import LogoutButton
-import '../../styles/Dashboard.css';
+import React, { useEffect, useState } from "react";
+import { getAccountByUserId } from "../../api/accountApi";
+import { useAuth } from "../../AuthContext";
+import { Link } from "react-router-dom";
+import LogoutButton from "../common/LogoutButton"; // Import LogoutButton
+import "../../styles/Dashboard.css";
 
 const Dashboard = () => {
   const { authData } = useAuth();
@@ -18,11 +18,10 @@ const Dashboard = () => {
         try {
           // Fetch account details using userId
           const accountResponse = await getAccountByUserId(user.id, authToken);
-          console.log('User account response:', accountResponse);
           setAccountId(accountResponse.accountId);
           setBalance(accountResponse.balance);
         } catch (error) {
-          console.error('Error fetching data:', error);
+          console.error("Error fetching data:", error);
         }
       };
 
@@ -37,7 +36,10 @@ const Dashboard = () => {
       {/* Display User Balance and Account ID */}
       {authData && accountId !== null ? (
         <div>
-          <p className="balance-info">Welcome, {authData.user.username}! Your current balance is: ${balance}</p>
+          <p className="balance-info">
+            Welcome, {authData.user.username}! Your current balance is: $
+            {balance}
+          </p>
         </div>
       ) : (
         <p>Loading data...</p>

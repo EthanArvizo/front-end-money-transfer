@@ -1,5 +1,5 @@
-import React, { useState, useEffect } from 'react';
-import axiosInstance from '../../services/axiosInstance';
+import React, { useState, useEffect } from "react";
+import axiosInstance from "../../services/axiosInstance";
 
 const UserList = ({ onSelectUser, loggedInUserId }) => {
   const [users, setUsers] = useState([]);
@@ -9,14 +9,13 @@ const UserList = ({ onSelectUser, loggedInUserId }) => {
       try {
         const response = await axiosInstance.get(`/user/list`);
         // Filter out the logged-in user from the list
-        const filteredUsers = response.data.filter(user => {
+        const filteredUsers = response.data.filter((user) => {
           const isUserLoggedIn = user.id === loggedInUserId;
-          console.log(`User ID: ${user.id}, Username: ${user.username}, Is Logged In: ${isUserLoggedIn}`);
           return !isUserLoggedIn;
         });
         setUsers(filteredUsers);
       } catch (error) {
-        console.error('Error fetching users:', error.message);
+        console.error("Error fetching users:", error.message);
       }
     };
 
@@ -34,7 +33,7 @@ const UserList = ({ onSelectUser, loggedInUserId }) => {
           </tr>
         </thead>
         <tbody>
-          {users.map(user => (
+          {users.map((user) => (
             <tr key={user.id} onClick={() => onSelectUser(user.id)}>
               <td>{user.id}</td>
               <td>{user.username}</td>

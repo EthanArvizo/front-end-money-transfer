@@ -1,8 +1,8 @@
-import React, { useState, useEffect } from 'react';
-import { useAuth } from '../../AuthContext';
-import { getTransfersByAccountId } from '../../api/transfersApi';
-import { getUserByAccountId, getUserById } from '../../api/accountApi';
-import { Link, useParams } from 'react-router-dom';
+import React, { useState, useEffect } from "react";
+import { useAuth } from "../../AuthContext";
+import { getTransfersByAccountId } from "../../api/transfersApi";
+import { getUserByAccountId, getUserById } from "../../api/accountApi";
+import { Link, useParams } from "react-router-dom";
 
 const TransferHistory = () => {
   const { authData } = useAuth();
@@ -14,11 +14,13 @@ const TransferHistory = () => {
     const fetchTransferHistory = async () => {
       if (authData && authData.user) {
         try {
-          const transferHistory = await getTransfersByAccountId(accountId, authData.user.authToken);
-          console.log('Transfer History:', transferHistory); // Add this log
+          const transferHistory = await getTransfersByAccountId(
+            accountId,
+            authData.user.authToken
+          );
           setTransfers(transferHistory);
         } catch (error) {
-          console.error('Error fetching transfer history:', error);
+          console.error("Error fetching transfer history:", error);
         }
       }
     };
@@ -31,20 +33,29 @@ const TransferHistory = () => {
       const rendered = await Promise.all(
         transfers.map(async (transfer) => {
           try {
-            console.log('Sender Account ID:', transfer.accountFrom);
-            console.log('Receiver Account ID:', transfer.accountTo);
-
             // Fetch user details for sender
-            const senderUserDetails = await getUserByAccountId(transfer.accountFrom, authData.user.authToken);
+            const senderUserDetails = await getUserByAccountId(
+              transfer.accountFrom,
+              authData.user.authToken
+            );
 
             // Fetch username for sender
-            const senderUsername = await getUserById(senderUserDetails.id, authData.user.authToken);
+            const senderUsername = await getUserById(
+              senderUserDetails.id,
+              authData.user.authToken
+            );
 
             // Fetch user details for receiver
-            const receiverUserDetails = await getUserByAccountId(transfer.accountTo, authData.user.authToken);
+            const receiverUserDetails = await getUserByAccountId(
+              transfer.accountTo,
+              authData.user.authToken
+            );
 
             // Fetch username for receiver
-            const receiverUsername = await getUserById(receiverUserDetails.id, authData.user.authToken);
+            const receiverUsername = await getUserById(
+              receiverUserDetails.id,
+              authData.user.authToken
+            );
 
             return (
               <li key={transfer.transferId}>
@@ -54,7 +65,7 @@ const TransferHistory = () => {
               </li>
             );
           } catch (error) {
-            console.error('Error fetching user details:', error);
+            console.error("Error fetching user details:", error);
             return null;
           }
         })
