@@ -10,85 +10,64 @@ const SendTransfer = () => {
   const [amount, setAmount] = useState('');
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [error, setError] = useState(null);
+  const [successMessage, setSuccessMessage] = useState(null);
 
   const handleUserSelect = async (userId) => {
-    console.log('Selected User ID:', userId);
-
-    try {
-      const account = await getAccountByUserId(userId);
-      console.log('Account details:', account);
-      // Do something with account details if needed
-
-      setSelectedUserId(userId);
-    } catch (error) {
-      console.error('Error getting account details:', error.message);
-    }
+    setSelectedUserId(userId);
   };
 
   const handleSendTransfer = async () => {
-    if (selectedUserId && amount && authData) {
-      try {
-        setIsSubmitting(true);
-        setError(null);
+    try {
+      setIsSubmitting(true);
+      setError(null);
+      setSuccessMessage(null);
 
-        // Get the account details for the logged-in user
-        const loggedInUserAccount = await getAccountByUserId(authData.user.id);
-
-        // Get the account details for the selected user
-        const selectedUserAccount = await getAccountByUserId(selectedUserId);
-
-        // Assuming sendTransfer returns the updated balance or success message
-        await sendTransfer(loggedInUserAccount.accountId, selectedUserAccount.accountId, amount);
-
-        // Handle success, e.g., show a success message or redirect
-        console.log('Transfer successful');
-      } catch (error) {
-        // Handle error, e.g., display an error message
-        console.error('Error sending transfer:', error.message);
-        setError('Error sending transfer. Please try again.');
-      } finally {
-        setIsSubmitting(false);
+      if (!selectedUserId || !amount || !authData) {
+        throw new Error('Please select a user and enter an amount.');
       }
-    } else {
-      // Handle incomplete form, e.g., show a validation message
-      setError('Please select a user and enter an amount.');
+
+      const loggedInUserAccount = await getAccountByUserId(authData.user.id);
+      const selectedUserAccount = await getAccountByUserId(selectedUserId);
+
+      await sendTransfer(loggedInUserAccount.accountId, selectedUserAccount.accountId, amount);
+
+      setSuccessMessage('Transfer successfully sent.');
+    } catch (error) {
+      console.error('Error sending transfer:', error.message);
+      setError('Error sending transfer. Please try again.');
+    } finally {
+      setIsSubmitting(false);
     }
   };
 
   const handleRequestTransfer = async () => {
-    if (selectedUserId && amount && authData) {
-      try {
-        setIsSubmitting(true);
-        setError(null);
+    try {
+      setIsSubmitting(true);
+      setError(null);
+      setSuccessMessage(null);
 
-        // Get the account details for the logged-in user
-        const loggedInUserAccount = await getAccountByUserId(authData.user.id);
-
-        // Get the account details for the selected user
-        const selectedUserAccount = await getAccountByUserId(selectedUserId);
-
-        // Assuming requestTransfer returns the success message
-        await requestTransfer(loggedInUserAccount.accountId, selectedUserAccount.accountId, amount);
-
-        // Handle success, e.g., show a success message or redirect
-        console.log('Transfer request successful');
-      } catch (error) {
-        // Handle error, e.g., display an error message
-        console.error('Error requesting transfer:', error.message);
-        setError('Error requesting transfer. Please try again.');
-      } finally {
-        setIsSubmitting(false);
+      if (!selectedUserId || !amount || !authData) {
+        throw new Error('Please select a user and enter an amount.');
       }
-    } else {
-      // Handle incomplete form, e.g., show a validation message
-      setError('Please select a user and enter an amount.');
+
+      const loggedInUserAccount = await getAccountByUserId(authData.user.id);
+      const selectedUserAccount = await getAccountByUserId(selectedUserId);
+
+      await requestTransfer(loggedInUserAccount.accountId, selectedUserAccount.accountId, amount);
+
+      setSuccessMessage('Transfer request successfully sent.');
+    } catch (error) {
+      console.error('Error requesting transfer:', error.message);
+      setError('Error requesting transfer. Please try again.');
+    } finally {
+      setIsSubmitting(false);
     }
   };
 
   return (
     <div>
       <h2>Create Transfer</h2>
-      <UserList onSelectUser={handleUserSelect} />
+      <UserList onSelectUser={handleUserSelect} loggedInUserId={authData.user.id} />
 
       {selectedUserId && (
         <div>
@@ -106,6 +85,7 @@ const SendTransfer = () => {
           </button>
 
           {error && <p style={{ color: 'red' }}>{error}</p>}
+          {successMessage && <p style={{ color: 'green' }}>{successMessage}</p>}
         </div>
       )}
     </div>

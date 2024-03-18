@@ -8,14 +8,20 @@ const UserList = ({ onSelectUser, loggedInUserId }) => {
     const fetchUsers = async () => {
       try {
         const response = await axiosInstance.get(`/user/list`);
-        setUsers(response.data);
+        // Filter out the logged-in user from the list
+        const filteredUsers = response.data.filter(user => {
+          const isUserLoggedIn = user.id === loggedInUserId;
+          console.log(`User ID: ${user.id}, Username: ${user.username}, Is Logged In: ${isUserLoggedIn}`);
+          return !isUserLoggedIn;
+        });
+        setUsers(filteredUsers);
       } catch (error) {
         console.error('Error fetching users:', error.message);
       }
     };
 
     fetchUsers();
-  }, [loggedInUserId]); 
+  }, [loggedInUserId]);
 
   return (
     <div>
@@ -28,7 +34,7 @@ const UserList = ({ onSelectUser, loggedInUserId }) => {
           </tr>
         </thead>
         <tbody>
-          {users.map((user) => (
+          {users.map(user => (
             <tr key={user.id} onClick={() => onSelectUser(user.id)}>
               <td>{user.id}</td>
               <td>{user.username}</td>

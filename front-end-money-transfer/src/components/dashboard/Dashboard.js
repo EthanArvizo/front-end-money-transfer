@@ -1,14 +1,14 @@
 import React, { useEffect, useState } from 'react';
 import { getAccountByUserId } from '../../api/accountApi';
 import { useAuth } from '../../AuthContext';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link } from 'react-router-dom';
+import LogoutButton from '../common/LogoutButton'; // Import LogoutButton
 import '../../styles/Dashboard.css';
 
 const Dashboard = () => {
-  const { authData, setAuthData } = useAuth();
+  const { authData } = useAuth();
   const [balance, setBalance] = useState(null);
   const [accountId, setAccountId] = useState(null);
-  const navigate = useNavigate();
 
   useEffect(() => {
     if (authData) {
@@ -29,15 +29,6 @@ const Dashboard = () => {
       fetchData();
     }
   }, [authData]);
-
-  const handleLogout = () => {
-    // Clear authentication data from local storage
-    localStorage.removeItem('authToken');
-    // Clear authentication data from context
-    setAuthData(null);
-    // Redirect to the login page
-    navigate('/login');
-  };
 
   return (
     <div className="dashboard-container">
@@ -73,10 +64,8 @@ const Dashboard = () => {
         <button>Create Transfer</button>
       </Link>
 
-      {/* Logout option */}
-      {authData && (
-        <button onClick={handleLogout}>Logout</button>
-      )}
+      {/* Use LogoutButton component */}
+      <LogoutButton />
     </div>
   );
 };
