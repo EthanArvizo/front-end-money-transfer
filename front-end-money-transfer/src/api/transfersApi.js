@@ -118,42 +118,42 @@ export const getTransfersByAccountId = async (accountId) => {
 
   export const requestTransfer = async (accountFrom, accountTo, amount) => {
     try {
-      const transferData = {
-        accountFrom,
-        accountTo,
-        amount,
-      };
-  
-      console.log('Transfer request data:', transferData);
-  
-      // Your server-side endpoint for creating a transfer request
-      const response = await axiosInstance.post('/transfer/request', transferData);
-      console.log('Server response:', response.data);
-  
-      // Check if the response indicates success
-      if (response.data === 'Transfer request created successfully') {
-        // Optionally, you can handle success here
-        console.log('Transfer request created successfully');
-        return response.data;
-      } else {
-        // Handle other responses or errors
-        console.error('Error creating transfer request:', response.data);
-        throw new Error('Error creating transfer request: ' + response.data);
-      }
+        const transferData = {
+            accountFrom,
+            accountTo,
+            amount,
+        };
+
+        console.log('Transfer request data:', transferData);
+
+        // Your server-side endpoint for creating a transfer request
+        const response = await axiosInstance.post('/transfer/request', transferData);
+        console.log('Server response:', response.data);
+
+        // Check if the response indicates success
+        if (response.status === 200) {
+            // Optionally, you can handle success here
+            console.log('Transfer request created successfully');
+            return response.data;
+        } else {
+            // Handle other responses or errors
+            console.error('Error creating transfer request:', response.data);
+            throw new Error('Error creating transfer request: ' + response.data);
+        }
     } catch (error) {
-      // Enhance the error handling to get more information
-      console.error('Error sending transfer request:', error);
-  
-      // Check if the error has a response
-      if (error.response) {
-        // Log the response status and data
-        console.error('Response status:', error.response.status);
-        console.error('Response data:', error.response.data);
-      }
-  
-      throw error;
+        // Enhance the error handling to get more information
+        console.error('Error sending transfer request:', error);
+
+        // Check if the error has a response
+        if (error.response) {
+            // Log the response status and data
+            console.error('Response status:', error.response.status);
+            console.error('Response data:', error.response.data);
+        }
+
+        throw error;
     }
-  };
+};
 
   export const acceptTransfer = async (transferId) => {
     try {
