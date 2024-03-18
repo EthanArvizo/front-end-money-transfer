@@ -1,4 +1,5 @@
-import React, { useState, useEffect } from 'react'; // Import useEffect
+import React, { useState, useEffect } from 'react';
+import { updateAuthToken } from '../../services/axiosInstance';
 import { login } from '../../api/tenmoApi';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../../AuthContext';
@@ -15,7 +16,7 @@ const Login = () => {
   useEffect(() => {
     // Reset authData when the component mounts (on the login page)
     setAuthData(null);
-  }, [setAuthData]); // Include setAuthData in the dependency array
+  }, [setAuthData]);
 
   const handleLogin = async () => {
     try {
@@ -26,16 +27,19 @@ const Login = () => {
       const authToken = response.token;
       localStorage.setItem('authToken', authToken);
   
+      // Update auth data with the new token
       setAuthData({
         authToken,
         user: response.user,
       });
   
+      // Update the authorization token in the Axios instance
+      updateAuthToken();
+  
       console.log('Navigating to /dashboard');
       navigate('/dashboard');
   
       console.log('Login successful:', response);
-  
     } catch (error) {
       console.error('Login failed:', error);
       // Handle login error (e.g., display an error message to the user)

@@ -84,21 +84,22 @@ export const getTransfersByAccountId = async (accountId) => {
         accountTo,
         amount,
       };
-
+  
       console.log('Transfer data:', transferData);
   
       // Your server-side endpoint for creating a send transfer
       const response = await axiosInstance.post('/transfer/send', transferData);
       console.log('Server response:', response.data);
   
-      // Check if the response indicates success (you may need to adjust this based on your server's response format)
+      // Check if the response indicates success
       if (response.data === 'Transfer created successfully') {
-        // Optionally, you can handle success here, log, or perform additional actions
+        // Optionally, you can handle success here
         console.log('Transfer created successfully');
+        return response.data;
       } else {
-        // Handle other responses or errors as needed
+        // Handle other responses or errors
         console.error('Error creating transfer:', response.data);
-        throw new Error('Error creating transfer');
+        throw new Error('Error creating transfer: ' + response.data);
       }
     } catch (error) {
       // Enhance the error handling to get more information
@@ -129,14 +130,15 @@ export const getTransfersByAccountId = async (accountId) => {
       const response = await axiosInstance.post('/transfer/request', transferData);
       console.log('Server response:', response.data);
   
-      // Check if the response indicates success (you may need to adjust this based on your server's response format)
+      // Check if the response indicates success
       if (response.data === 'Transfer request created successfully') {
-        // Optionally, you can handle success here, log, or perform additional actions
+        // Optionally, you can handle success here
         console.log('Transfer request created successfully');
+        return response.data;
       } else {
-        // Handle other responses or errors as needed
+        // Handle other responses or errors
         console.error('Error creating transfer request:', response.data);
-        throw new Error('Error creating transfer request');
+        throw new Error('Error creating transfer request: ' + response.data);
       }
     } catch (error) {
       // Enhance the error handling to get more information
