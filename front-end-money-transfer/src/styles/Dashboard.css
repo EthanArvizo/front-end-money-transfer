@@ -1,12 +1,12 @@
 .dashboard-container {
-  max-width: 600px;
+  max-width: 1000px;
   margin: auto;
-  padding: 30px;
+  padding: 80px;
   border: 1px solid #ddd;
   border-radius: 10px;
   box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
   background-color: #fff;
-  margin-top: 220px; /* Adjust the margin-top value to center it vertically */
+  margin-top: 150px; /* Adjust the margin-top value to center it vertically */
   text-align: center; /* Center the text horizontally within .dashboard-container */
   display: flex;
   flex-direction: column;
