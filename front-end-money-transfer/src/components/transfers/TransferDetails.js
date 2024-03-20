@@ -20,7 +20,6 @@ const TransferDetails = () => {
   const [receiverUsername, setReceiverUsername] = useState("");
 
   useEffect(() => {
-    
     const fetchTransferDetails = async () => {
       try {
         const transferDetails = await getTransferDetailsById(transferId);

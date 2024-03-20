@@ -12,16 +12,13 @@ import {
   Button,
   CircularProgress,
   Box,
-  Collapse,
 } from "@mui/material";
 import ButtonAppBar from "../common/ButtonAppBar";
 import ArrowBackIcon from "@mui/icons-material/ArrowBack";
-import TransferDetails from "../transfers/TransferDetails"; // Import TransferDetails component
 
 const PendingTransfers = () => {
   const [pendingTransfers, setPendingTransfers] = useState(null);
   const { accountId } = useParams();
-  const [selectedTransfer, setSelectedTransfer] = useState(null); // Track the selected transfer
 
   useEffect(() => {
     const fetchData = async () => {
@@ -41,6 +38,7 @@ const PendingTransfers = () => {
   const handleAcceptTransfer = async (transferId) => {
     try {
       await acceptTransfer(transferId);
+      // After accepting the transfer, fetch updated pending transfers
       const updatedPendingTransfers = await getPendingTransfersByAccountId(
         accountId
       );
@@ -53,6 +51,7 @@ const PendingTransfers = () => {
   const handleDenyTransfer = async (transferId) => {
     try {
       await denyTransfer(transferId);
+      // After denying the transfer, fetch updated pending transfers
       const updatedPendingTransfers = await getPendingTransfersByAccountId(
         accountId
       );
@@ -62,21 +61,21 @@ const PendingTransfers = () => {
     }
   };
 
-  const handleViewDetails = (transferId) => {
-    setSelectedTransfer((prevTransferId) => {
-      if (prevTransferId === transferId) {
-        return null; // Clear the selection if it's already the same
-      } else {
-        return transferId; // Set the selected transfer
-      }
-    });
-  };
-
   return (
     <>
       <ButtonAppBar title="Pending Transfers" />
-      <Box sx={{ display: "flex", alignItems: "center", paddingLeft: 2 }}>
-        <Button component={Link} to="/dashboard" startIcon={<ArrowBackIcon />}>
+      <Box
+        sx={{
+          display: "flex",
+          alignItems: "center",
+          paddingLeft: 2,
+        }}
+      >
+        <Button
+          component={Link}
+          to="/dashboard"
+          startIcon={<ArrowBackIcon />}
+        >
           Back to Dashboard
         </Button>
       </Box>
@@ -84,42 +83,33 @@ const PendingTransfers = () => {
         {pendingTransfers !== null ? (
           <List>
             {pendingTransfers.map((transfer) => (
-              <React.Fragment key={transfer.transferId}>
-                <ListItem>
-                  <ListItemText
-                    primary={`Transfer ID: ${transfer.transferId}, Amount: $${transfer.amount}`}
-                  />
-                  <Button
-                    onClick={() => handleAcceptTransfer(transfer.transferId)}
-                    variant="contained"
-                    color="primary"
-                  >
-                    Accept
-                  </Button>
-                  <Button
-                    onClick={() => handleDenyTransfer(transfer.transferId)}
-                    variant="contained"
-                    color="error"
-                  >
-                    Deny
-                  </Button>
-                  <Button
-                    onClick={() => handleViewDetails(transfer.transferId)}
-                    variant="outlined"
-                  >
-                    View Details
-                  </Button>
-                </ListItem>
-                <Collapse
-                  in={selectedTransfer === transfer.transferId}
-                  timeout="auto"
-                  unmountOnExit
+              <ListItem key={transfer.transferId}>
+                <ListItemText
+                  primary={`Transfer ID: ${transfer.transferId}, Amount: $${transfer.amount}`}
+                />
+                <Button
+                  component={Link}
+                  to={`/transfer/${transfer.transferId}`} // Add Link component with appropriate URL
+                  variant="contained"
+                  color="primary"
                 >
-                  {selectedTransfer === transfer.transferId && (
-                    <TransferDetails transferId={transfer.transferId} />
-                  )}
-                </Collapse>
-              </React.Fragment>
+                  View Details
+                </Button>
+                <Button
+                  onClick={() => handleAcceptTransfer(transfer.transferId)}
+                  variant="contained"
+                  color="primary"
+                >
+                  Accept
+                </Button>
+                <Button
+                  onClick={() => handleDenyTransfer(transfer.transferId)}
+                  variant="contained"
+                  color="error"
+                >
+                  Deny
+                </Button>
+              </ListItem>
             ))}
           </List>
         ) : (
