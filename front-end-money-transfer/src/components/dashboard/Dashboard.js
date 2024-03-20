@@ -15,7 +15,6 @@ const Dashboard = () => {
       if (authData) {
         const { user, authToken } = authData;
         try {
-          // Fetch account details using userId
           const accountResponse = await getAccountByUserId(user.id, authToken);
           setAccountId(accountResponse.accountId);
           setBalance(accountResponse.balance);
@@ -34,22 +33,32 @@ const Dashboard = () => {
       <Box sx={{ padding: 5 }}>
         <Grid container spacing={2}>
           <Grid item xs={12}>
-          </Grid>
-          <Grid item xs={12}>
-            {authData && accountId !== null ? (
-              <Card>
-                <CardContent>
-                  <Typography variant="h6" gutterBottom>
-                    Welcome, {authData.user.username}!
-                  </Typography>
-                  <Typography variant="body1">
-                    Your current balance is: ${balance}
-                  </Typography>
-                </CardContent>
-              </Card>
-            ) : (
-              <Typography variant="body1">Loading data...</Typography>
-            )}
+            <Card>
+              <CardContent>
+                {authData && accountId !== null ? (
+                  <>
+                    <Typography variant="h6" gutterBottom>
+                      Welcome, {authData.user.username}!
+                    </Typography>
+                    <Box
+                      sx={{
+                        backgroundColor: "#f0f0f0",
+                        borderRadius: 4,
+                        padding: 2,
+                        marginBottom: 2,
+                        boxShadow: "0 4px 8px rgba(0, 0, 0, 0.1)",
+                      }}
+                    >
+                      <Typography variant="body1" sx={{ fontWeight: "bold" }}>
+                        Your current balance: ${balance}
+                      </Typography>
+                    </Box>
+                  </>
+                ) : (
+                  <Typography variant="body1">Loading data...</Typography>
+                )}
+              </CardContent>
+            </Card>
           </Grid>
           <Grid item xs={12}>
             {authData && accountId !== null && (

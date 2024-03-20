@@ -1,14 +1,17 @@
 import React, { useState, useEffect } from "react";
-import { useParams } from "react-router-dom";
+import { useParams, Link } from "react-router-dom";
 import {
   Typography,
   CircularProgress,
   Paper,
   Box,
   Grid,
+  Button,
 } from "@mui/material";
+import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 import { getTransferDetailsById } from "../../api/transfersApi";
 import { getUserByAccountId, getUserById } from "../../api/accountApi";
+import ButtonAppBar from "../common/ButtonAppBar";
 
 const TransferDetails = () => {
   const { transferId } = useParams();
@@ -17,6 +20,7 @@ const TransferDetails = () => {
   const [receiverUsername, setReceiverUsername] = useState("");
 
   useEffect(() => {
+    
     const fetchTransferDetails = async () => {
       try {
         const transferDetails = await getTransferDetailsById(transferId);
@@ -57,30 +61,41 @@ const TransferDetails = () => {
   }
 
   return (
-    <Box p={2}>
-      <Typography variant="h4" gutterBottom>
-        Transfer Details
-      </Typography>
-      <Paper elevation={3} sx={{ p: 2 }}>
-        <Grid container spacing={2}>
-          <Grid item xs={12} sm={6}>
-            <Typography variant="subtitle1">
-              Transfer ID: {transfer.transferId}
-            </Typography>
+    <>
+      <ButtonAppBar title="Transfer Details" />
+      <Box sx={{ display: "flex", alignItems: "center", paddingLeft: 2 }}>
+        <Button component={Link} to="/dashboard" startIcon={<ArrowBackIcon />}>
+          Back to Dashboard
+        </Button>
+      </Box>
+      <Box p={2}>
+        <Paper elevation={3} sx={{ p: 2 }}>
+          <Grid container spacing={2}>
+            <Grid item xs={12} sm={6}>
+              <Typography variant="subtitle1">
+                Transfer ID: {transfer.transferId}
+              </Typography>
+            </Grid>
+            <Grid item xs={12} sm={6}>
+              <Typography variant="subtitle1">
+                Amount: {transfer.amount}
+              </Typography>
+            </Grid>
+            <Grid item xs={12} sm={6}>
+              <Typography variant="subtitle1">
+                From: {senderUsername}
+              </Typography>
+            </Grid>
+            <Grid item xs={12} sm={6}>
+              <Typography variant="subtitle1">
+                To: {receiverUsername}
+              </Typography>
+            </Grid>
+            {/* Add more details here as needed */}
           </Grid>
-          <Grid item xs={12} sm={6}>
-            <Typography variant="subtitle1">Amount: {transfer.amount}</Typography>
-          </Grid>
-          <Grid item xs={12} sm={6}>
-            <Typography variant="subtitle1">From: {senderUsername}</Typography>
-          </Grid>
-          <Grid item xs={12} sm={6}>
-            <Typography variant="subtitle1">To: {receiverUsername}</Typography>
-          </Grid>
-          {/* Add more details here as needed */}
-        </Grid>
-      </Paper>
-    </Box>
+        </Paper>
+      </Box>
+    </>
   );
 };
 

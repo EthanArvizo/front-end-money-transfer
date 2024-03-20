@@ -4,7 +4,8 @@ import { getTransfersByAccountId } from "../../api/transfersApi";
 import { getUserByAccountId, getUserById } from "../../api/accountApi";
 import { Link, useParams } from "react-router-dom";
 import ButtonAppBar from "../common/ButtonAppBar";
-import {Typography, Box, List, ListItem, ListItemText } from "@mui/material";
+import {Box, List, ListItem, ListItemText, Button } from "@mui/material";
+import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 
 const TransferHistory = () => {
   const { authData } = useAuth();
@@ -81,9 +82,9 @@ const TransferHistory = () => {
     <>
       <ButtonAppBar title="Transfer History" />
       <Box sx={{ padding: 2 }}>
-        <Typography variant="h4" gutterBottom>
-          
-        </Typography>
+        <Button component={Link} to="/dashboard" startIcon={<ArrowBackIcon />}>
+          Back to Dashboard
+        </Button>
         <List>
           {renderedTransfers}
         </List>

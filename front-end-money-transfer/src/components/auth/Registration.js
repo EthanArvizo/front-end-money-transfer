@@ -1,7 +1,17 @@
 import React, { useState } from "react";
 import { registerUser } from "../../api/tenmoApi"; // Adjust the import path as needed
-import "../../styles/Registration.css";
 import { Link } from "react-router-dom";
+import {
+  TextField,
+  Button,
+  Typography,
+  Container,
+  CssBaseline,
+  Avatar,
+  Grid,
+  Box,
+} from "@mui/material";
+import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
 
 const Register = () => {
   const [username, setUsername] = useState("");
@@ -14,43 +24,66 @@ const Register = () => {
   };
 
   return (
-    <div className="registration-container">
-      <h1 className="registration-heading">Register</h1>
-      <form className="registration-form">
-        <div className="registration-group">
-          <label className="registration-label" htmlFor="username">
-            Username:
-          </label>
-          <input
-            type="text"
+    <Container component="main" maxWidth="xs">
+      <CssBaseline />
+      <Box
+        sx={{
+          marginTop: 8,
+          display: "flex",
+          flexDirection: "column",
+          alignItems: "center",
+        }}
+      >
+        <Avatar sx={{ m: 1, bgcolor: "secondary.main" }}>
+          <LockOutlinedIcon />
+        </Avatar>
+        <Typography component="h1" variant="h5">
+          Register
+        </Typography>
+        <Box component="form" noValidate sx={{ mt: 1 }}>
+          <TextField
+            margin="normal"
+            required
+            fullWidth
+            id="username"
+            label="Username"
+            name="username"
+            autoComplete="username"
+            autoFocus
             value={username}
             onChange={(e) => setUsername(e.target.value)}
-            className="registration-input"
           />
-        </div>
-        <div className="registration-group">
-          <label className="registration-label" htmlFor="password">
-            Password:
-          </label>
-          <input
+          <TextField
+            margin="normal"
+            required
+            fullWidth
+            name="password"
+            label="Password"
             type="password"
+            id="password"
+            autoComplete="current-password"
             value={password}
             onChange={(e) => setPassword(e.target.value)}
-            className="registration-input"
           />
-        </div>
-        <button
-          type="button"
-          onClick={handleRegister}
-          className="registration-button"
-        >
-          Register
-        </button>
-      </form>
-      <div className="registration-link">
-        Already have an account? <Link to="/login">Login</Link>
-      </div>
-    </div>
+          <Button
+            type="button"
+            fullWidth
+            variant="contained"
+            sx={{ mt: 3, mb: 2 }}
+            onClick={handleRegister}
+          >
+            Register
+          </Button>
+          <Grid container>
+            <Grid item>
+              <Link to="/login" variant="body2">
+                {"Already have an account? Sign In"}
+              </Link>
+            </Grid>
+          </Grid>
+        </Box>
+      </Box>
+    </Container>
   );
 };
 

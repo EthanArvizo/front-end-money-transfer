@@ -4,6 +4,7 @@ import { sendTransfer, requestTransfer } from "../../api/transfersApi";
 import { getAccountByUserId } from "../../api/accountApi";
 import { useAuth } from "../../AuthContext";
 import ButtonAppBar from "../common/ButtonAppBar";
+import { Link } from "react-router-dom";
 import {
   Box,
   Button,
@@ -11,6 +12,7 @@ import {
   TextField,
   Typography
 } from "@mui/material";
+import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 
 const CreateTransfer = () => {
   const { authData } = useAuth();
@@ -83,6 +85,11 @@ const CreateTransfer = () => {
   return (
     <>
       <ButtonAppBar title="Create Transfer" />
+      <Box sx={{ display: "flex", alignItems: "center", paddingLeft: 2 }}>
+        <Button component={Link} to="/dashboard" startIcon={<ArrowBackIcon />}>
+          Back to Dashboard
+        </Button>
+      </Box>
       <Box p={2}>
         <UserList
           onSelectUser={handleUserSelect}

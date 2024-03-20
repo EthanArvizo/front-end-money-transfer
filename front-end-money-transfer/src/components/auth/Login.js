@@ -3,13 +3,22 @@ import { updateAuthToken } from "../../services/axiosInstance";
 import { login } from "../../api/tenmoApi";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "../../AuthContext";
-import "../../styles/Login.css";
 import { Link } from "react-router-dom";
+import {
+  TextField,
+  Button,
+  Typography,
+  Container,
+  CssBaseline,
+  Avatar,
+  Grid,
+  Box,
+} from "@mui/material";
+import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
 
 const Login = () => {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
-
   const navigate = useNavigate();
   const { setAuthData } = useAuth();
 
@@ -21,19 +30,15 @@ const Login = () => {
   const handleLogin = async () => {
     try {
       const response = await login(username, password);
-
       const authToken = response.token;
       localStorage.setItem("authToken", authToken);
-
       // Update auth data with the new token
       setAuthData({
         authToken,
         user: response.user,
       });
-
       // Update the authorization token in the Axios instance
       updateAuthToken();
-
       navigate("/dashboard");
     } catch (error) {
       console.error("Login failed:", error);
@@ -42,41 +47,66 @@ const Login = () => {
   };
 
   return (
-    <div className="login-container">
-      <h2 className="login-heading">Login</h2>
-      <form className="login-form">
-        <div className="form-group">
-          <label className="label" htmlFor="username">
-            Username:
-          </label>
-          <input
-            type="text"
+    <Container component="main" maxWidth="xs">
+      <CssBaseline />
+      <Box
+        sx={{
+          marginTop: 8,
+          display: "flex",
+          flexDirection: "column",
+          alignItems: "center",
+        }}
+      >
+        <Avatar sx={{ m: 1, bgcolor: "secondary.main" }}>
+          <LockOutlinedIcon />
+        </Avatar>
+        <Typography component="h1" variant="h5">
+          Sign in
+        </Typography>
+        <Box component="form" noValidate sx={{ mt: 1 }}>
+          <TextField
+            margin="normal"
+            required
+            fullWidth
             id="username"
+            label="Username"
+            name="username"
+            autoComplete="username"
+            autoFocus
             value={username}
             onChange={(e) => setUsername(e.target.value)}
-            className="input"
           />
-        </div>
-        <div className="form-group">
-          <label className="label" htmlFor="password">
-            Password:
-          </label>
-          <input
+          <TextField
+            margin="normal"
+            required
+            fullWidth
+            name="password"
+            label="Password"
             type="password"
             id="password"
+            autoComplete="current-password"
             value={password}
             onChange={(e) => setPassword(e.target.value)}
-            className="input"
           />
-        </div>
-        <button type="button" onClick={handleLogin} className="button">
-          Login
-        </button>
-        <div className="register-link">
-          Don't have an account? <Link to="/register">Register</Link>
-        </div>
-      </form>
-    </div>
+          <Button
+            type="button"
+            fullWidth
+            variant="contained"
+            sx={{ mt: 3, mb: 2 }}
+            onClick={handleLogin}
+          >
+            Sign In
+          </Button>
+          <Grid container>
+            <Grid item>
+              <Link to="/register" variant="body2">
+                {"Don't have an account? Sign Up"}
+              </Link>
+            </Grid>
+          </Grid>
+        </Box>
+      </Box>
+    </Container>
   );
 };
 
