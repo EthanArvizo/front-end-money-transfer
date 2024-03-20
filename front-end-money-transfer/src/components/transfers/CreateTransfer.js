@@ -3,8 +3,16 @@ import UserList from "./UserList";
 import { sendTransfer, requestTransfer } from "../../api/transfersApi";
 import { getAccountByUserId } from "../../api/accountApi";
 import { useAuth } from "../../AuthContext";
+import ButtonAppBar from "../common/ButtonAppBar";
+import {
+  Box,
+  Button,
+  CircularProgress,
+  TextField,
+  Typography
+} from "@mui/material";
 
-const SendTransfer = () => {
+const CreateTransfer = () => {
   const { authData } = useAuth();
   const [selectedUserId, setSelectedUserId] = useState(null);
   const [amount, setAmount] = useState("");
@@ -73,38 +81,66 @@ const SendTransfer = () => {
   };
 
   return (
-    <div>
-      <h2>Create Transfer</h2>
-      <UserList
-        onSelectUser={handleUserSelect}
-        loggedInUserId={authData.user.id}
-      />
-
-      {selectedUserId && (
-        <div>
-          <label>
-            Enter the amount:
-            <input
-              type="number"
-              value={amount}
-              onChange={(e) => setAmount(e.target.value)}
+    <>
+      <ButtonAppBar title="Create Transfer" />
+      <Box p={2}>
+        <UserList
+          onSelectUser={handleUserSelect}
+          loggedInUserId={authData.user.id}
+        />
+  
+        {selectedUserId && (
+          <Box mt={2}>
+            <TextField
+              label="Enter the amount"
+              type="text" // Change the type to 'text'
+              value={'$' + amount} // Prepend '$' to the amount value
+              onChange={(e) => setAmount(e.target.value.substring(1))} // Exclude the '$' when setting the amount
+              fullWidth
+              variant="outlined"
+              sx={{ mb: 2 }}
             />
-          </label>
-
-          <button onClick={handleSendTransfer} disabled={isSubmitting}>
-            {isSubmitting ? "Sending..." : "Send Money"}
-          </button>
-
-          <button onClick={handleRequestTransfer} disabled={isSubmitting}>
-            {isSubmitting ? "Requesting..." : "Request Money"}
-          </button>
-
-          {error && <p style={{ color: "red" }}>{error}</p>}
-          {successMessage && <p style={{ color: "green" }}>{successMessage}</p>}
-        </div>
-      )}
-    </div>
+  
+            <Button
+              onClick={handleSendTransfer}
+              disabled={isSubmitting}
+              variant="contained"
+              color="primary"
+              sx={{ mr: 2 }}
+            >
+              {isSubmitting ? (
+                <CircularProgress size={24} />
+              ) : (
+                "Send Money"
+              )}
+            </Button>
+  
+            <Button
+              onClick={handleRequestTransfer}
+              disabled={isSubmitting}
+              variant="contained"
+              color="primary"
+            >
+              {isSubmitting ? (
+                <CircularProgress size={24} />
+              ) : (
+                "Request Money"
+              )}
+            </Button>
+  
+            <Box mt={2}>
+              {error && (
+                <Typography color="error">{error}</Typography>
+              )}
+              {successMessage && (
+                <Typography color="success">{successMessage}</Typography>
+              )}
+            </Box>
+          </Box>
+        )}
+      </Box>
+    </>
   );
 };
 
-export default SendTransfer;
+export default CreateTransfer;

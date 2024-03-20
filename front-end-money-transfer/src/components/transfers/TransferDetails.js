@@ -1,7 +1,14 @@
 import React, { useState, useEffect } from "react";
+import { useParams } from "react-router-dom";
+import {
+  Typography,
+  CircularProgress,
+  Paper,
+  Box,
+  Grid,
+} from "@mui/material";
 import { getTransferDetailsById } from "../../api/transfersApi";
 import { getUserByAccountId, getUserById } from "../../api/accountApi";
-import { useParams } from "react-router-dom";
 
 const TransferDetails = () => {
   const { transferId } = useParams();
@@ -15,25 +22,20 @@ const TransferDetails = () => {
         const transferDetails = await getTransferDetailsById(transferId);
         setTransfer(transferDetails);
 
-        // Check if transferDetails contains valid accountFrom and accountTo values
         if (
           transferDetails &&
           transferDetails.accountFrom &&
           transferDetails.accountTo
         ) {
-          // Fetch sender user details
           const senderUserDetails = await getUserByAccountId(
             transferDetails.accountFrom
           );
-          // Fetch username for sender
           const senderName = await getUserById(senderUserDetails.id);
           setSenderUsername(senderName.username);
 
-          // Fetch user details for receiver
           const receiverUserDetails = await getUserByAccountId(
             transferDetails.accountTo
           );
-          // Fetch username for receiver
           const receiverName = await getUserById(receiverUserDetails.id);
           setReceiverUsername(receiverName.username);
         } else {
@@ -51,18 +53,34 @@ const TransferDetails = () => {
   }, [transferId]);
 
   if (!transfer) {
-    return <div>Loading transfer details...</div>;
+    return <CircularProgress />;
   }
 
   return (
-    <div>
-      <h2>Transfer Details</h2>
-      <p>Transfer ID: {transfer.transferId}</p>
-      <p>Amount: {transfer.amount}</p>
-      <p>From: {senderUsername}</p>
-      <p>To: {receiverUsername}</p>
-      {/* Add more details here as needed */}
-    </div>
+    <Box p={2}>
+      <Typography variant="h4" gutterBottom>
+        Transfer Details
+      </Typography>
+      <Paper elevation={3} sx={{ p: 2 }}>
+        <Grid container spacing={2}>
+          <Grid item xs={12} sm={6}>
+            <Typography variant="subtitle1">
+              Transfer ID: {transfer.transferId}
+            </Typography>
+          </Grid>
+          <Grid item xs={12} sm={6}>
+            <Typography variant="subtitle1">Amount: {transfer.amount}</Typography>
+          </Grid>
+          <Grid item xs={12} sm={6}>
+            <Typography variant="subtitle1">From: {senderUsername}</Typography>
+          </Grid>
+          <Grid item xs={12} sm={6}>
+            <Typography variant="subtitle1">To: {receiverUsername}</Typography>
+          </Grid>
+          {/* Add more details here as needed */}
+        </Grid>
+      </Paper>
+    </Box>
   );
 };
 

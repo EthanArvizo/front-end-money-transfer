@@ -1,22 +1,35 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { useAuth } from '../../AuthContext';
 import { useNavigate } from 'react-router-dom';
+import { Button } from '@mui/material';
 
 const LogoutButton = () => {
   const { setAuthData } = useAuth();
   const navigate = useNavigate();
 
   const handleLogout = () => {
-    // Clear authentication data from local storage
     localStorage.removeItem('authToken');
-    // Clear authentication data from context
     setAuthData(null);
-    // Redirect to the login page
     navigate('/login');
   };
 
+  useEffect(() => {
+    const handleForwardNavigation = (event) => {
+      if (event.state && event.state.preventForwardNavigation) {
+        navigate('/login');
+        window.history.pushState(null, '', window.location.href);
+      }
+    };
+
+    window.addEventListener('popstate', handleForwardNavigation);
+
+    return () => {
+      window.removeEventListener('popstate', handleForwardNavigation);
+    };
+  }, [navigate]);
+
   return (
-    <button onClick={handleLogout}>Logout</button>
+    <Button color="inherit" onClick={handleLogout}>Logout</Button>
   );
 };
 

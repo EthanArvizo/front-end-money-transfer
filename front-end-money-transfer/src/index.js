@@ -3,6 +3,7 @@ import ReactDOM from 'react-dom/client';
 import './index.css';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
+import { CssBaseline } from '@mui/material';
 
 const root = document.getElementById('root');
 const reactRoot = ReactDOM.createRoot(root);
@@ -10,7 +11,9 @@ const reactRoot = ReactDOM.createRoot(root);
 if (process.env.NODE_ENV === 'development') {
   reactRoot.render(
     <React.StrictMode>
+      <CssBaseline>
       <App />
+      </CssBaseline>
     </React.StrictMode>,
   );
 } else {

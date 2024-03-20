@@ -1,8 +1,10 @@
 import React, { useState, useEffect } from "react";
+import { Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper, Typography } from "@mui/material";
 import axiosInstance from "../../services/axiosInstance";
 
 const UserList = ({ onSelectUser, loggedInUserId }) => {
   const [users, setUsers] = useState([]);
+  const [selectedUserId, setSelectedUserId] = useState(null);
 
   useEffect(() => {
     const fetchUsers = async () => {
@@ -22,25 +24,36 @@ const UserList = ({ onSelectUser, loggedInUserId }) => {
     fetchUsers();
   }, [loggedInUserId]);
 
+  const handleUserClick = (userId) => {
+    setSelectedUserId(userId);
+    onSelectUser(userId);
+  };
+
   return (
     <div>
-      <h3>Users</h3>
-      <table>
-        <thead>
-          <tr>
-            <th>ID</th>
-            <th>Name</th>
-          </tr>
-        </thead>
-        <tbody>
-          {users.map((user) => (
-            <tr key={user.id} onClick={() => onSelectUser(user.id)}>
-              <td>{user.id}</td>
-              <td>{user.username}</td>
-            </tr>
-          ))}
-        </tbody>
-      </table>
+      <Typography variant="h6">Users</Typography>
+      <TableContainer component={Paper}>
+        <Table>
+          <TableHead>
+            <TableRow>
+              <TableCell>ID</TableCell>
+              <TableCell>Name</TableCell>
+            </TableRow>
+          </TableHead>
+          <TableBody>
+            {users.map((user) => (
+              <TableRow
+                key={user.id}
+                onClick={() => handleUserClick(user.id)}
+                style={{ cursor: "pointer", backgroundColor: selectedUserId === user.id ? "#f0f0f0" : "inherit" }}
+              >
+                <TableCell>{user.id}</TableCell>
+                <TableCell>{user.username}</TableCell>
+              </TableRow>
+            ))}
+          </TableBody>
+        </Table>
+      </TableContainer>
     </div>
   );
 };

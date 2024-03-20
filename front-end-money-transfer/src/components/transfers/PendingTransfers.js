@@ -5,6 +5,8 @@ import {
   denyTransfer,
 } from "../../api/transfersApi";
 import { useParams } from "react-router-dom";
+import { List, ListItem, ListItemText, Button, CircularProgress } from "@mui/material";
+import ButtonAppBar from "../common/ButtonAppBar";
 
 const PendingTransfers = () => {
   const [pendingTransfers, setPendingTransfers] = useState(null);
@@ -52,26 +54,24 @@ const PendingTransfers = () => {
   };
 
   return (
-    <div>
-      <h2>Pending Transfers</h2>
-      {pendingTransfers !== null ? (
-        <ul>
-          {pendingTransfers.map((transfer) => (
-            <li key={transfer.transferId}>
-              Transfer ID: {transfer.transferId}, Amount: ${transfer.amount}
-              <button onClick={() => handleAcceptTransfer(transfer.transferId)}>
-                Accept
-              </button>
-              <button onClick={() => handleDenyTransfer(transfer.transferId)}>
-                Deny
-              </button>
-            </li>
-          ))}
-        </ul>
-      ) : (
-        <p>Loading pending transfers...</p>
-      )}
-    </div>
+    <>
+      <ButtonAppBar title="Pending Transfers" />
+      <div>
+        {pendingTransfers !== null ? (
+          <List>
+            {pendingTransfers.map((transfer) => (
+              <ListItem key={transfer.transferId}>
+                <ListItemText primary={`Transfer ID: ${transfer.transferId}, Amount: $${transfer.amount}`} />
+                <Button onClick={() => handleAcceptTransfer(transfer.transferId)} variant="contained" color="primary">Accept</Button>
+                <Button onClick={() => handleDenyTransfer(transfer.transferId)} variant="contained" color="error">Deny</Button>
+              </ListItem>
+            ))}
+          </List>
+        ) : (
+          <CircularProgress />
+        )}
+      </div>
+    </>
   );
 };
 

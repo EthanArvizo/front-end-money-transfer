@@ -3,6 +3,8 @@ import { useAuth } from "../../AuthContext";
 import { getTransfersByAccountId } from "../../api/transfersApi";
 import { getUserByAccountId, getUserById } from "../../api/accountApi";
 import { Link, useParams } from "react-router-dom";
+import ButtonAppBar from "../common/ButtonAppBar";
+import {Typography, Box, List, ListItem, ListItemText } from "@mui/material";
 
 const TransferHistory = () => {
   const { authData } = useAuth();
@@ -58,11 +60,9 @@ const TransferHistory = () => {
             );
 
             return (
-              <li key={transfer.transferId}>
-                <Link to={`/transfer/${transfer.transferId}`}>
-                  {`${transfer.amount} from ${senderUsername.username} to ${receiverUsername.username}`}
-                </Link>
-              </li>
+              <ListItem key={transfer.transferId} button component={Link} to={`/transfer/${transfer.transferId}`}>
+                <ListItemText primary={`${transfer.amount} from ${senderUsername.username} to ${receiverUsername.username}`} />
+              </ListItem>
             );
           } catch (error) {
             console.error("Error fetching user details:", error);
@@ -78,10 +78,17 @@ const TransferHistory = () => {
   }, [transfers, authData]);
 
   return (
-    <div>
-      <h2>Transfer History</h2>
-      <ul>{renderedTransfers}</ul>
-    </div>
+    <>
+      <ButtonAppBar title="Transfer History" />
+      <Box sx={{ padding: 2 }}>
+        <Typography variant="h4" gutterBottom>
+          
+        </Typography>
+        <List>
+          {renderedTransfers}
+        </List>
+      </Box>
+    </>
   );
 };
 
