@@ -15,6 +15,7 @@ import {
 } from "@mui/material";
 import ButtonAppBar from "../common/ButtonAppBar";
 import ArrowBackIcon from "@mui/icons-material/ArrowBack";
+import { getUserByAccountId, getUserById } from "../../api/accountApi";
 
 const PendingTransfers = () => {
   const [pendingTransfers, setPendingTransfers] = useState(null);
@@ -26,7 +27,25 @@ const PendingTransfers = () => {
         const pendingTransfersResponse = await getPendingTransfersByAccountId(
           accountId
         );
-        setPendingTransfers(pendingTransfersResponse);
+        // Fetch sender and receiver usernames for each transfer
+        const transfersWithUsernames = await Promise.all(
+          pendingTransfersResponse.map(async (transfer) => {
+            const senderUserDetails = await getUserByAccountId(
+              transfer.accountFrom
+            );
+            const senderName = await getUserById(senderUserDetails.id);
+            const receiverUserDetails = await getUserByAccountId(
+              transfer.accountTo
+            );
+            const receiverName = await getUserById(receiverUserDetails.id);
+            return {
+              ...transfer,
+              senderUsername: senderName.username,
+              receiverUsername: receiverName.username,
+            };
+          })
+        );
+        setPendingTransfers(transfersWithUsernames);
       } catch (error) {
         console.error("Error fetching pending transfers:", error);
       }
@@ -64,18 +83,8 @@ const PendingTransfers = () => {
   return (
     <>
       <ButtonAppBar title="Pending Transfers" />
-      <Box
-        sx={{
-          display: "flex",
-          alignItems: "center",
-          paddingLeft: 2,
-        }}
-      >
-        <Button
-          component={Link}
-          to="/dashboard"
-          startIcon={<ArrowBackIcon />}
-        >
+      <Box sx={{ display: "flex", alignItems: "center", paddingLeft: 2 }}>
+        <Button component={Link} to="/dashboard" startIcon={<ArrowBackIcon />}>
           Back to Dashboard
         </Button>
       </Box>
@@ -85,13 +94,14 @@ const PendingTransfers = () => {
             {pendingTransfers.map((transfer) => (
               <ListItem key={transfer.transferId}>
                 <ListItemText
-                  primary={`Transfer ID: ${transfer.transferId}, Amount: $${transfer.amount}`}
+                  primary={`Amount: $${transfer.amount}`}
+                  secondary={`From: ${transfer.senderUsername}, To: ${transfer.receiverUsername}`}
                 />
                 <Button
                   component={Link}
-                  to={`/transfer/${transfer.transferId}`} // Add Link component with appropriate URL
+                  to={`/transfer/${transfer.transferId}`}
                   variant="contained"
-                  color="primary"
+                  color="info"
                 >
                   View Details
                 </Button>

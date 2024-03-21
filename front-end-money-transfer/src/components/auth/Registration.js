@@ -7,11 +7,9 @@ import {
   Typography,
   Container,
   CssBaseline,
-  Avatar,
   Grid,
   Box,
 } from "@mui/material";
-import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
 
 const Register = () => {
   const [username, setUsername] = useState("");
@@ -34,9 +32,7 @@ const Register = () => {
           alignItems: "center",
         }}
       >
-        <Avatar sx={{ m: 1, bgcolor: "secondary.main" }}>
-          <LockOutlinedIcon />
-        </Avatar>
+        <span class="material-symbols-outlined"style={{ fontSize: 40, color: "green" }}>payments</span>
         <Typography component="h1" variant="h5">
           Register
         </Typography>

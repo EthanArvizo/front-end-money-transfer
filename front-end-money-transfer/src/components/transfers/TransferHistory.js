@@ -4,7 +4,7 @@ import { getTransfersByAccountId } from "../../api/transfersApi";
 import { getUserByAccountId, getUserById } from "../../api/accountApi";
 import { Link, useParams } from "react-router-dom";
 import ButtonAppBar from "../common/ButtonAppBar";
-import {Box, List, ListItem, ListItemText, Button } from "@mui/material";
+import { Box, List, ListItem, ListItemText, Button } from "@mui/material";
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 
 const TransferHistory = () => {
@@ -60,9 +60,11 @@ const TransferHistory = () => {
               authData.user.authToken
             );
 
+            const amountWithDecimals = parseFloat(transfer.amount).toFixed(2);
+
             return (
               <ListItem key={transfer.transferId} button component={Link} to={`/transfer/${transfer.transferId}`}>
-                <ListItemText primary={`${transfer.amount} from ${senderUsername.username} to ${receiverUsername.username}`} />
+                <ListItemText primary={`$${amountWithDecimals} from ${senderUsername.username} to ${receiverUsername.username}`} />
               </ListItem>
             );
           } catch (error) {

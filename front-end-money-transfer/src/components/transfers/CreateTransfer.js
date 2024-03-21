@@ -10,7 +10,7 @@ import {
   Button,
   CircularProgress,
   TextField,
-  Typography
+  Typography,
 } from "@mui/material";
 import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 
@@ -95,19 +95,25 @@ const CreateTransfer = () => {
           onSelectUser={handleUserSelect}
           loggedInUserId={authData.user.id}
         />
-  
+
         {selectedUserId && (
           <Box mt={2}>
             <TextField
               label="Enter the amount"
-              type="text" // Change the type to 'text'
-              value={'$' + amount} // Prepend '$' to the amount value
-              onChange={(e) => setAmount(e.target.value.substring(1))} // Exclude the '$' when setting the amount
+              value={"$" + amount}
+              onChange={(e) => {
+                const value = e.target.value.replace(/[^\d.]/g, ""); // Remove non-numeric and non-decimal characters
+                setAmount(value);
+              }}
+              onBlur={() => {
+                const formattedAmount = parseFloat(amount).toFixed(2);
+                setAmount(formattedAmount);
+              }}
               fullWidth
               variant="outlined"
               sx={{ mb: 2 }}
             />
-  
+
             <Button
               onClick={handleSendTransfer}
               disabled={isSubmitting}
@@ -115,30 +121,20 @@ const CreateTransfer = () => {
               color="primary"
               sx={{ mr: 2 }}
             >
-              {isSubmitting ? (
-                <CircularProgress size={24} />
-              ) : (
-                "Send Money"
-              )}
+              {isSubmitting ? <CircularProgress size={24} /> : "Send Money"}
             </Button>
-  
+
             <Button
               onClick={handleRequestTransfer}
               disabled={isSubmitting}
               variant="contained"
               color="primary"
             >
-              {isSubmitting ? (
-                <CircularProgress size={24} />
-              ) : (
-                "Request Money"
-              )}
+              {isSubmitting ? <CircularProgress size={24} /> : "Request Money"}
             </Button>
-  
+
             <Box mt={2}>
-              {error && (
-                <Typography color="error">{error}</Typography>
-              )}
+              {error && <Typography color="error">{error}</Typography>}
               {successMessage && (
                 <Typography color="success">{successMessage}</Typography>
               )}
