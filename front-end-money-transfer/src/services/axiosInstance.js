@@ -1,13 +1,15 @@
-import axios from 'axios';
-import getAuthToken from './getAuthToken';
+import axios from "axios";
+import getAuthToken from "./getAuthToken";
 
 const instance = axios.create({
-  baseURL: 'http://localhost:8080', // Replace with your API's base URL
+  baseURL: "http://localhost:8080", // Replace with your API's base URL
 });
 
 // Function to update the authorization token
 export const updateAuthToken = () => {
-  instance.defaults.headers.common['Authorization'] = `Bearer ${getAuthToken()}`;
+  instance.defaults.headers.common[
+    "Authorization"
+  ] = `Bearer ${getAuthToken()}`;
 };
 
 // Add a request interceptor

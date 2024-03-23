@@ -1,20 +1,20 @@
-import React from 'react';
-import ReactDOM from 'react-dom/client';
-import './index.css';
-import App from './App';
-import reportWebVitals from './reportWebVitals';
-import { CssBaseline } from '@mui/material';
+import React from "react";
+import ReactDOM from "react-dom/client";
+import "./index.css";
+import App from "./App";
+import reportWebVitals from "./reportWebVitals";
+import { CssBaseline } from "@mui/material";
 
-const root = document.getElementById('root');
+const root = document.getElementById("root");
 const reactRoot = ReactDOM.createRoot(root);
 
-if (process.env.NODE_ENV === 'development') {
+if (process.env.NODE_ENV === "development") {
   reactRoot.render(
     <React.StrictMode>
       <CssBaseline>
-      <App />
+        <App />
       </CssBaseline>
-    </React.StrictMode>,
+    </React.StrictMode>
   );
 } else {
   reactRoot.render(<App />);

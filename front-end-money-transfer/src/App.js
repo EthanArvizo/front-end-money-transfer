@@ -24,10 +24,16 @@ function App() {
           <Route path="/login" element={<Login />} />
           <Route path="/register" element={<Register />} />
           <Route path="/dashboard" element={<Dashboard />} />
-          <Route path="/transfer/account/:accountId" element={<TransferHistory />} />
-          <Route path="/transfer/:transferId" element={<TransferDetails />} /> 
+          <Route
+            path="/transfer/account/:accountId"
+            element={<TransferHistory />}
+          />
+          <Route path="/transfer/:transferId" element={<TransferDetails />} />
           <Route path="/send-transfer" element={<SendTransfer />} />
-          <Route path="/account/:accountId/pending" element={<PendingTransfers />} />
+          <Route
+            path="/account/:accountId/pending"
+            element={<PendingTransfers />}
+          />
         </Routes>
       </Router>
     </AuthProvider>

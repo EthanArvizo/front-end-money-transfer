@@ -32,7 +32,12 @@ const Register = () => {
           alignItems: "center",
         }}
       >
-        <span class="material-symbols-outlined"style={{ fontSize: 40, color: "green" }}>payments</span>
+        <span
+          class="material-symbols-outlined"
+          style={{ fontSize: 40, color: "green" }}
+        >
+          payments
+        </span>
         <Typography component="h1" variant="h5">
           Register
         </Typography>

@@ -1,33 +1,31 @@
-import axiosInstance from '../services/axiosInstance';
+import axiosInstance from "../services/axiosInstance";
 
 export const login = async (username, password) => {
   try {
-    console.log('Attempting login with username:', username);
-    const response = await axiosInstance.post('/login', {
+    console.log("Attempting login with username:", username);
+    const response = await axiosInstance.post("/login", {
       username,
       password,
     });
     return response.data;
   } catch (error) {
-    console.error('Login error:', error);
+    console.error("Login error:", error);
     throw error;
   }
 };
 
 export const registerUser = async (username, password) => {
   try {
-    console.log('Attempting user registration with username:', username);
-    const response = await axiosInstance.post('/register', {
+    console.log("Attempting user registration with username:", username);
+    const response = await axiosInstance.post("/register", {
       username,
       password,
     });
 
-    console.log('User registration response:', response);
+    console.log("User registration response:", response);
     return response.data;
   } catch (error) {
-    console.error('User registration error:', error);
+    console.error("User registration error:", error);
     throw error;
   }
 };
-
-

@@ -14,9 +14,6 @@ import {
   Box,
 } from "@mui/material";
 
-
-
-
 const Login = () => {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
@@ -58,7 +55,12 @@ const Login = () => {
           alignItems: "center",
         }}
       >
-        <span class="material-symbols-outlined"style={{ fontSize: 40, color: "green" }}>payments</span>
+        <span
+          class="material-symbols-outlined"
+          style={{ fontSize: 40, color: "green" }}
+        >
+          payments
+        </span>
         <Typography component="h1" variant="h5">
           Sign in
         </Typography>
